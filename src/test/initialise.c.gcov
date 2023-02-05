@@ -1,0 +1,181 @@
+        -:    0:Source:../initialise.c
+        -:    1:#include <stdio.h>
+        -:    2:#include <stdlib.h>
+        -:    3:#include <string.h>
+        -:    4:#include "color.h"
+        -:    5:#include <math.h>
+        -:    6:#include <time.h>
+        -:    7:#include "initialise.h"
+        -:    8:
+        -:    9:
+        -:   10:#define ANSI_COLOR_RED     "\e[41m"
+        -:   11:#define ANSI_COLOR_GREEN   "\e[42m"
+        -:   12:#define ANSI_COLOR_ORANGE  "\e[43m"
+        -:   13:#define ANSI_COLOR_YELLOW  "\e[0;103m"
+        -:   14:#define ANSI_COLOR_BLUE    "\e[44m"
+        -:   15:#define ANSI_COLOR_PINK    "\e[0;105m"
+        -:   16:#define ANSI_COLOR_CYAN    "\e[46m"
+        -:   17:#define ANSI_COLOR_VIOLET  "\e[45m"
+        -:   18:#define ANSI_COLOR_BLACK  "\e[40m"
+        -:   19:#define ANSI_COLOR_RESET   "\e[0m"
+        -:   20:
+        -:   21:
+        -:   22:
+       16:   23:enum color_t* initialise(int size, int nbre_colors,size_t seed){
+        -:   24:  //srand(seed);
+       16:   25:  int taille=(int)sqrt(size);
+       16:   26:  enum color_t *t=malloc(sizeof(*t)*size);
+      123:   27:  for(int i=0;i<size;i++){
+      107:   28:    t[i]=rand()%nbre_colors;
+        -:   29:  }
+       16:   30:  int nomber_de_blocs=rand()%(taille);
+       24:   31:  for(int k=0;k<nomber_de_blocs;k++){
+        8:   32:    int couleur_de_bloc=rand()%nbre_colors;
+        8:   33:    int taille_ligne=rand()%(taille-3);
+        8:   34:    int taille_colonne=rand()%(taille-3);
+        -:   35:    //int ligne_de_bloc=rand()%(int)(sqrt(size));
+        -:   36:    //
+        -:   37:    //    int colonne_de_bloc=rand()%(int)(sqrt(size));
+        8:   38:    int debut_ligne=rand()%taille;
+        8:   39:    int debut_colonne=rand()%(taille-taille_ligne);
+        8:   40:    int id=debut_colonne+debut_ligne*taille;
+       8*:   41:    for(int i=0;i<taille_ligne;i++){
+    #####:   42:      t[id+i]=couleur_de_bloc;
+        -:   43:    }
+        8:   44:    couleur_de_bloc=rand()%nbre_colors;
+        8:   45:    debut_ligne=rand()%(taille-taille_colonne);
+        8:   46:    debut_colonne=rand()%(taille);
+        8:   47:    id=debut_colonne+debut_ligne*taille;
+       8*:   48:    for(int i=0;i<taille_colonne;i++){
+    #####:   49:      t[i*taille+id]=couleur_de_bloc;
+        -:   50:      }
+        -:   51:  } 
+       16:   52:    return t;
+        -:   53:  }
+        -:   54:
+        -:   55:
+        -:   56:
+        4:   57:void afficher_square(enum color_t *t,int size){
+        -:   58:  //  int n=sqrt(size);
+       42:   59:  for(int i=0;i<size;i++){
+       38:   60:      if(i%((int)sqrt(size))==0 && i!=0) printf("\n");
+       38:   61:      if(*(t+i) == 1)
+        4:   62:	printf(ANSI_COLOR_RED "  " ANSI_COLOR_RESET);
+       38:   63:      if(*(t+i) == 2)
+        8:   64:	printf(ANSI_COLOR_GREEN "  " ANSI_COLOR_RESET);
+       38:   65:      if(*(t+i) == 3)
+        8:   66:	printf(ANSI_COLOR_YELLOW "  " ANSI_COLOR_RESET);
+       38:   67:      if(*(t+i) == 0)
+        8:   68:	printf(ANSI_COLOR_BLUE "  " ANSI_COLOR_RESET);
+       38:   69:      if(*(t+i) == 7)
+    #####:   70:	printf(ANSI_COLOR_PINK "  " ANSI_COLOR_RESET);
+       38:   71:      if(*(t+i) == 6)
+        4:   72:	printf(ANSI_COLOR_CYAN "  " ANSI_COLOR_RESET);
+       38:   73:      if(*(t+i) == 5)
+        2:   74:	printf(ANSI_COLOR_VIOLET "  " ANSI_COLOR_RESET);
+       38:   75:      if(*(t+i) == 4)
+        4:   76:	printf(ANSI_COLOR_ORANGE "  " ANSI_COLOR_RESET);
+       38:   77:      if(*(t+i) == -1)
+    #####:   78:	printf(ANSI_COLOR_BLACK "  " ANSI_COLOR_RESET);
+        -:   79:  }
+        4:   80:  printf("\n");
+        4:   81:}
+        -:   82:
+        4:   83:void afficher_donut(enum color_t *t,int size){
+        4:   84:  int n=sqrt(size);
+       42:   85:  for(int i=0;i<size;i++){
+       38:   86:    if((i/n<n/3 || i%n<n/3 || i/n>=2*n/3 || i%n>=2*n/3)){
+       34:   87:      if(i%((int)sqrt(size))==0 && i!=0) printf("\n");
+       34:   88:      if(*(t+i) == 1)
+    #####:   89:	printf(ANSI_COLOR_RED "  " ANSI_COLOR_RESET);
+       34:   90:      if(*(t+i) == 2)
+        8:   91:	printf(ANSI_COLOR_GREEN "  " ANSI_COLOR_RESET);
+       34:   92:      if(*(t+i) == 3)
+        8:   93:	printf(ANSI_COLOR_YELLOW "  " ANSI_COLOR_RESET);
+       34:   94:      if(*(t+i) == 0)
+        8:   95:	printf(ANSI_COLOR_BLUE "  " ANSI_COLOR_RESET);
+       34:   96:      if(*(t+i) == 7)
+    #####:   97:	printf(ANSI_COLOR_PINK "  " ANSI_COLOR_RESET);
+       34:   98:      if(*(t+i) == 6)
+        4:   99:	printf(ANSI_COLOR_CYAN "  " ANSI_COLOR_RESET);
+       34:  100:      if(*(t+i) == 5)
+        2:  101:	printf(ANSI_COLOR_VIOLET "  " ANSI_COLOR_RESET);
+       34:  102:      if(*(t+i) == 4)
+        4:  103:	printf(ANSI_COLOR_ORANGE "  " ANSI_COLOR_RESET);
+        -:  104:    }
+        -:  105:    else
+        4:  106:      printf(ANSI_COLOR_RESET "  " ANSI_COLOR_RESET);
+        -:  107:  }
+        4:  108:  printf("\n");
+        4:  109:}
+        -:  110:  
+        -:  111:
+        -:  112:
+        4:  113:void afficher_hache(enum color_t *t,int size){
+        4:  114:  int n=sqrt(size);
+       42:  115:  for(int i=0;i<size;i++){
+       38:  116:    if((i%n<n/3 ||((i%n<2*n/3 && i%n>=n/3)&&(i/n<2*n/3 &&i/n>=n/3)) || i%n>=2*n/3 )){
+       30:  117:      if(i%((int)sqrt(size))==0 && i!=0) printf("\n");
+       30:  118:      if(*(t+i) == 1)
+        4:  119:	printf(ANSI_COLOR_RED "  " ANSI_COLOR_RESET);
+       30:  120:      if(*(t+i) == 2)
+        8:  121:	printf(ANSI_COLOR_GREEN "  " ANSI_COLOR_RESET);
+       30:  122:      if(*(t+i) == 3)
+        4:  123:	printf(ANSI_COLOR_YELLOW "  " ANSI_COLOR_RESET);
+       30:  124:      if(*(t+i) == 0)
+        8:  125:	printf(ANSI_COLOR_BLUE "  " ANSI_COLOR_RESET);
+       30:  126:      if(*(t+i) == 7)
+    #####:  127:	printf(ANSI_COLOR_PINK "  " ANSI_COLOR_RESET);
+       30:  128:      if(*(t+i) == 6)
+    #####:  129:	printf(ANSI_COLOR_CYAN "  " ANSI_COLOR_RESET);
+       30:  130:      if(*(t+i) == 5)
+        2:  131:	printf(ANSI_COLOR_VIOLET "  " ANSI_COLOR_RESET);
+       30:  132:      if(*(t+i) == 4)
+        4:  133:	printf(ANSI_COLOR_ORANGE "  " ANSI_COLOR_RESET);
+       30:  134:      if(*(t+i) == -1)
+    #####:  135:	printf(ANSI_COLOR_BLACK "  " ANSI_COLOR_RESET);
+        -:  136:    }
+        -:  137:    else
+        8:  138:      printf(ANSI_COLOR_RESET "  " ANSI_COLOR_RESET);
+        -:  139:  }
+        4:  140:   printf("\n");
+        4:  141:}
+        -:  142:  
+        -:  143:
+        -:  144:
+        -:  145:/*
+        -:  146:int main(int argc, char* argv[]){
+        -:  147:  srand(time(NULL));
+        -:  148:  enum color_t d=PINK;
+        -:  149:  // printf("%s\n",color_to_string(d));
+        -:  150:  afficher(initialise(100),100);
+        -:  151:  //color_to_string(c);
+        -:  152:
+        -:  153:
+        -:  154:  return 0;
+        -:  155:}
+        -:  156:*/
+        -:  157:
+        8:  158:enum color_t* array_copy(enum color_t* t,int size){
+        8:  159:  enum color_t* m=malloc(sizeof(enum color_t)*size);
+       40:  160:  for(int i=0;i<size;i++){
+       32:  161:    m[i]=t[i];
+        -:  162:  }
+        8:  163:  return m;
+        -:  164:}
+        -:  165:
+        -:  166:/* int main(){ */
+        -:  167:/*   enum color_t* t=malloc(sizeof(*t)*4); */
+        -:  168:  
+        -:  169:/*   t[0]=RED; */
+        -:  170:/*   t[1]=GREEN; */
+        -:  171:/*    t[2]=RED; */
+        -:  172:/*   t[3]=RED; */
+        -:  173:  
+        -:  174:/*   enum color_t* m=array_copy(t,4); */
+        -:  175:/*   for(int i=0;i<4;i++){ */
+        -:  176:/*     printf("m[i]=%d\n",m[i]); */
+        -:  177:    
+        -:  178:/*   } */
+        -:  179:/*   return 0; */
+        -:  180:/* } */

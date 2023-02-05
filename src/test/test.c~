@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include "../color.h"
+#include <assert.h>
+#include <string.h>
+#include "../initialise.h"
+
+static void test_color_to_string(void){
+  enum color_t r=1;
+  enum color_t b=0;
+  enum color_t g=2;
+  enum color_t y=3;
+  enum color_t o=4;
+  enum color_t v=5;
+  enum color_t c=6;
+  enum color_t p=7;
+  
+  assert(strcmp(color_to_string(b),"BLUE")==0);
+  assert(strcmp(color_to_string(r),"RED")==0);
+  assert(strcmp(color_to_string(g),"GREEN")==0);
+  assert(strcmp(color_to_string(y),"YELLOW")==0);
+  assert(strcmp(color_to_string(o),"ORANGE")==0);
+  assert(strcmp(color_to_string(v),"VIOLET")==0);
+  assert(strcmp(color_to_string(c),"CYAN")==0);
+  assert(strcmp(color_to_string(p),"PINK")==0);
+  printf("test_color_to_string valide\n");
+}
+static void test_array_copy(void){
+  enum color_t* t=initialise(4,7);
+  enum color_t* copy=array_copy(t,4);
+  assert(t[0]==copy[0]);
+  assert(t[1]==copy[1]);
+  assert(t[2]==copy[2]);
+  assert(t[3]==copy[3]);
+  printf("array_copy valide");
+}  
+
+
+
+int main(int argc, char* argv[]){
+
+  test_color_to_string();
+  test_array_copy();
+
+  return 0;
+}
